@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Regisztráció - Daily Bugle</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="page">
+
+    <h1 class="title">Regisztráció</h1>
+
+    <form id="registerForm">
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Jelszó">
+    <input type="text" id="displayName" placeholder="Név">
+
+    <select id="role">
+        <option value="READER">Olvasó</option>
+        <option value="JOURNALIST">Újságíró</option>
+    </select>
+
+    <button type="submit">Regisztráció</button>
+    </form>
+
+
+    <script>
+        document.getElementById("registerForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault(); // ne töltse újra az oldalt
+
+                const data = {
+                    email: document.getElementById("email").value,
+                    password: document.getElementById("password").value,
+                    displayName: document.getElementById("displayName").value,
+                    role: document.getElementById("role").value
+                };
+
+                fetch("/daily-bugle/api/users/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => {
+                        if (response.status === 201) {
+                            alert("Sikeres regisztráció!");
+                        } else {
+                            alert("Hiba történt!");
+                        }
+                    });
+            });
+    </script>
+
+</div>
+</body>
+</html>

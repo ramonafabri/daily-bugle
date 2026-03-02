@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -128,7 +129,14 @@ public class UserService {
 
         if (user.getRole() == Role.JOURNALIST) {
 
-            List<Article> writtenArticles = articleRepository.findByAuthor_IdOrderByCreatedAtDesc(user.getId());
+            LocalDateTime now = LocalDateTime.now();
+
+            List<Article> writtenArticles =
+                    articleRepository.findPublicByAuthor(
+                            user.getId(),
+                            Status.ACTIVE,
+                            now
+                    );
 
             List<UserArticleInfo> articleInfos =
                     writtenArticles.stream()

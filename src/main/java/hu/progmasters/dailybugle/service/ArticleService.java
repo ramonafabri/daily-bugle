@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +66,12 @@ public class ArticleService {
 
 
     public ArticleDetail getArticleById(Long id){
-        Article article = findArticleById(id);
+        LocalDateTime now = LocalDateTime.now();
+
+        Article article = articleRepository
+                .findPublicById(id, Status.ACTIVE, now)
+                .orElseThrow(() ->
+                        new ArticleNotFoundException("No public article found with id: " + id));
 
         ArticleDetail result =
                 modelMapper.map(article, ArticleDetail.class);
@@ -73,7 +79,11 @@ public class ArticleService {
         result.setAuthor(article.getAuthor().getDisplayName());
 
         List<CommentDetail> comments = article.getComments().stream()
-                .map(comment -> modelMapper.map(comment, CommentDetail.class))
+                .map(comment -> {
+                    CommentDetail cd = modelMapper.map(comment, CommentDetail.class);
+                    cd.setAuthor(comment.getUser().getDisplayName());
+                    return cd;
+                })
                 .toList();
 
         result.setComments(comments);
@@ -92,8 +102,10 @@ public class ArticleService {
 
     public  List<ArticlesListItem> getArticlesByAuthor(Long authorId){
 
+        LocalDateTime now = LocalDateTime.now();
+
         return articleRepository
-                .findByAuthorIdAndStatus(authorId, Status.ACTIVE)
+                .findPublicByAuthor(authorId, Status.ACTIVE, now)
                 .stream()
                 .map(this::mapToListItem)
                 .toList();
@@ -124,6 +136,7 @@ public class ArticleService {
         article.setTitle(articleCommand.getTitle());
         article.setSynopsis(articleCommand.getSynopsis());
         article.setContent(articleCommand.getContent());
+        article.setPublishAt(articleCommand.getPublishAt());
 
         log.info("Article updated: {}", article.getId());
     }

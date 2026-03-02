@@ -85,3 +85,33 @@ GET http://localhost:8080/daily-bugle/api/users/2
 
 ###
 GET http://localhost:8080/daily-bugle/api/users/1
+
+###
+POST  http://localhost:8080/daily-bugle/api/articles
+Content-Type: application/json
+X-User-Id: 1
+
+{
+  "title": "Daily News",
+  "synopsis": "Something happened",
+  "content": "Full article content here...",
+  "publishAt": "2026-02-05T10:00:00Z"
+}
+
+
+###
+GET http://localhost:8080/daily-bugle/api/users/1
+
+###
+POST  http://localhost:8080/daily-bugle/api/articles
+Content-Type: application/json
+X-User-Id: 1
+
+{
+  "title": "This is in the past",
+  "synopsis": "Something happened with animals",
+  "content": "Full article content here...",
+  "publishAt": "2025-05-10T10:00:00Z"
+}
+
+
