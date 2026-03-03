@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register - Daily Bugle</title>
+    <title>Login - Daily Bugle</title>
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
@@ -14,19 +14,12 @@
 
 <div class="auth-container">
 
-    <h1 class="auth-title">REGISTER</h1>
+    <h1 class="auth-title">LOGIN</h1>
 
-    <form id="registerForm" class="auth-form">
+    <form id="loginForm" class="auth-form">
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required>
-        <input type="text" id="displayName" placeholder="Display Name" required>
-
-        <select id="role" class="auth-select">
-            <option value="READER">Reader</option>
-            <option value="JOURNALIST">Journalist</option>
-        </select>
-
-        <button type="submit" class="auth-btn">CREATE ACCOUNT</button>
+        <button type="submit" class="auth-btn">ENTER</button>
     </form>
 
     <p id="errorMessage" class="error-message"></p>
@@ -35,19 +28,17 @@
 
 <script src="app.js"></script>
 <script>
-    document.getElementById("registerForm")
+    document.getElementById("loginForm")
         .addEventListener("submit", function(event) {
 
             event.preventDefault();
 
             const data = {
                 email: document.getElementById("email").value,
-                password: document.getElementById("password").value,
-                displayName: document.getElementById("displayName").value,
-                role: document.getElementById("role").value
+                password: document.getElementById("password").value
             };
 
-            fetch("/daily-bugle/api/users/register", {
+            fetch("/daily-bugle/api/users/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -55,11 +46,18 @@
                 body: JSON.stringify(data)
             })
                 .then(response => {
-                    if (response.status === 201) {
-                        window.location.href = "login.html";
-                    } else {
-                        throw new Error("Registration failed");
+                    if (!response.ok) {
+                        throw new Error("Invalid email or password");
                     }
+                    return response.json();
+                })
+                .then(user => {
+
+                    // { id, displayName, role }
+
+                    localStorage.setItem("user", JSON.stringify(user));
+
+                    window.location.href = "news.html";
                 })
                 .catch(error => {
                     document.getElementById("errorMessage").innerText = error.message;

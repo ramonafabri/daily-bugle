@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Article - Daily Bugle</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="logo">DAILY BUGLE</div>
+    <nav id="navbar">
+        <a href="news.html">News</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+    </nav>
+</header>
+
+<div class="article-container">
+
+    <h1 id="articleTitle" class="article-detail-title"></h1>
+
+    <div class="article-info">
+        <span id="articleAuthor"></span> | |
+        <span id="articleDate"></span>
+    </div>
+
+    <div id="articleContent" class="article-content"></div>
+
+    <div class="article-rating">
+        ⭐ <span id="articleAverage"></span>
+        (<span id="articleRatingCount"></span> votes)
+    </div>
+
+    <div id="ratingSection"></div>
+
+    <div class="keyword-section">
+        <strong>Keywords:</strong>
+        <div id="articleKeywords"></div>
+    </div>
+
+    <hr>
+
+    <h2>Comments</h2>
+
+
+    <div id="commentFormContainer"></div>
+    <div id="commentsContainer"></div>
+
+</div>
+
+<script src="app.js"></script>
+<script src="article.js"></script>
+</body>
+</html>

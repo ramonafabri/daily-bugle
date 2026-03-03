@@ -1,13 +1,16 @@
 package hu.progmasters.dailybugle.dto.incoming;
 
+import hu.progmasters.dailybugle.domain.Category;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +27,9 @@ public class ArticleCommand {
     @NotBlank(message = "Content cannot be blank")
     private String content;
 
+    private Category category;
+
     private LocalDateTime publishAt;
 
+    List<String> keywords;
 }

@@ -1,60 +1,58 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
-<nav class="topnav">
-    <ul>
-        <li><a href="#">Főoldal</a></li>
-        <li><a href="#">Közélet</a></li>
-        <li><a href="#">Varázsvilág</a></li>
-        <li><a href="#">Politika</a></li>
-        <li><a href="#">Bulvár</a></li>
-        <li class="right"><a href="register.html">Regisztráció</a></li>
-    </ul>
-</nav>
-
 <head>
     <meta charset="UTF-8">
     <title>Daily Bugle</title>
     <link rel="stylesheet" href="main.css">
 </head>
-
 <body>
-<div class="page">
-    <h1  class="title">Daily Bugle</h1>
-    <h2 class="motto"> „Az igazság mindig utat talál.” </h2>
 
+<header class="topbar">
+    <div class="logo">DAILY BUGLE</div>
+    <nav id="navbar"></nav>
+    <nav>
+        <a href="news.html">News</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+    </nav>
+</header>
 
-    <section class="frontpage">
+<section class="frontpage">
 
-        <article class="headline">
-            <h2 class="headline-title">SIRIUS BLACK SIGHTED</h2>
+    <div class="frontpage-wrapper">
 
-            <img src="sirius.gif" class="headline-image">
-
-            <p class="headline-text">
-                Az Azkaban szökevénye újra feltűnt.
-                A minisztérium hallgat.
-                A varázslóvilág retteg.
-            </p>
-        </article>
-
-        <div class="secondary">
-            <article>
-                <h3>Minisztériumi botrány</h3>
-                <p>Új információk a belső vizsgálatról...</p>
-            </article>
-
-            <article>
-                <h3>Hogwarts védelme megerősítve</h3>
-                <p>Dementorok járőröznek a kastély körül...</p>
-            </article>
+        <div class="frontpage-tag">
+            EXCLUSIVE
         </div>
 
-    </section>
-</div>
+        <h1 class="frontpage-title">
+            REWARD FOR PHOTOS OF SPIDER-MAN
+        </h1>
 
+        <div class="frontpage-image">
+            <img src="spiderman.gif" alt="Spider-Man">
+        </div>
 
+        <p class="frontpage-subtitle">
+            J. Jonah Jameson demands photographic evidence of the masked menace.
+            Citizens encouraged to report sightings immediately.
+        </p>
 
+        <a href="news.html" class="frontpage-btn">
+            Read Full Story
+        </a>
+
+    </div>
+
+</section>
+
+<section class="breaking">
+    <div class="breaking-label">BREAKING NEWS</div>
+    <div class="breaking-text">
+        Spider-Man spotted again over Manhattan skyline.
+    </div>
+</section>
+
+<script src="app.js"></script>
 </body>
 </html>

@@ -4,13 +4,12 @@ import hu.progmasters.dailybugle.domain.*;
 import hu.progmasters.dailybugle.dto.incoming.LoginCommand;
 import hu.progmasters.dailybugle.dto.incoming.RegisterCommand;
 import hu.progmasters.dailybugle.dto.outgoing.*;
-import hu.progmasters.dailybugle.exception.EmailAlreadyExistsException;
-import hu.progmasters.dailybugle.exception.InvalidCredentialsException;
-import hu.progmasters.dailybugle.exception.UserNotFoundException;
+import hu.progmasters.dailybugle.exception.*;
 import hu.progmasters.dailybugle.repository.ArticleRepository;
 import hu.progmasters.dailybugle.repository.CommentRepository;
 import hu.progmasters.dailybugle.repository.RatingRepository;
 import hu.progmasters.dailybugle.repository.UserRepository;
+import hu.progmasters.dailybugle.security.CurrentUserProvider;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,18 +25,22 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService {
 
+    private static final String INACTIVE_DISPLAY_NAME = "*inaktív regisztráció*";
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RatingRepository ratingRepository;
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
+    private final CurrentUserProvider currentUserProvider;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RatingRepository ratingRepository, CommentRepository commentRepository, ArticleRepository articleRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RatingRepository ratingRepository, CommentRepository commentRepository, ArticleRepository articleRepository, CurrentUserProvider currentUserProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.ratingRepository = ratingRepository;
         this.commentRepository = commentRepository;
         this.articleRepository = articleRepository;
+        this.currentUserProvider = currentUserProvider;
     }
 
     public void register(RegisterCommand registerCommand) {
@@ -45,6 +48,10 @@ public class UserService {
         String normalizedEmail = registerCommand.getEmail().trim().toLowerCase();
         if (userRepository.existsByEmail(normalizedEmail)) {
             throw new EmailAlreadyExistsException("Email already exists: " + registerCommand.getEmail());
+        }
+
+        if (registerCommand.getRole() == Role.ADMIN) {
+            throw new IllegalArgumentException("Cannot register as ADMIN");
         }
 
         User user = new User();
@@ -152,6 +159,36 @@ public class UserService {
         return response;
 
     }
+
+    public void deactivateUser(Long userId) {
+
+        User currentUser = currentUserProvider.getCurrentUser();
+
+        if (currentUser.getRole() != Role.ADMIN) {
+            throw new AccessDeniedException("Only admin can deactivate users");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new UserNotFoundException("User not found with id: " + userId));
+
+        if (user.getStatus() == Status.INACTIVE) {
+            log.info("User {} is already inactive", userId);
+            return;
+        }
+
+        if (currentUser.getId().equals(userId)) {
+            throw new InvalidAdminOperationException("Admin cannot deactivate himself");
+        }
+
+        user.setStatus(Status.INACTIVE);
+        user.setEmail("deleted_user_" + user.getId() + "@deleted.local");
+        user.setDisplayName(INACTIVE_DISPLAY_NAME);
+        user.setPasswordHash("DEACTIVATED_" + user.getId());
+
+        log.info("User {} has been deactivated by admin {}", userId, currentUser.getId());
+    }
+
 
 
 }

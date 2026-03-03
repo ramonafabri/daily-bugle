@@ -3,9 +3,9 @@ POST http://localhost:8080/daily-bugle/api/users/register
 Content-Type: application/json
 
 {
-  "email": "journalist@test.com",
-  "password": "1234",
-  "displayName": "Peter Parker",
+  "email": "loius@test.com",
+  "password": "4567",
+  "displayName": "Lois Lane",
   "role": "JOURNALIST"
 }
 
@@ -26,8 +26,8 @@ POST http://localhost:8080/daily-bugle/api/users/login
 Content-Type: application/json
 
 {
-  "email": "journalist@test.com",
-  "password": "1234"
+  "email": "loius@test.com",
+  "password": "4567"
 }
 
 ###
@@ -100,7 +100,7 @@ X-User-Id: 1
 
 
 ###
-GET http://localhost:8080/daily-bugle/api/users/1
+GET http://localhost:8080/daily-bugle/api/articles/1
 
 ###
 POST  http://localhost:8080/daily-bugle/api/articles
@@ -108,10 +108,58 @@ Content-Type: application/json
 X-User-Id: 1
 
 {
-  "title": "This is in the past",
-  "synopsis": "Something happened with animals",
+  "title": "What a discovery",
+  "synopsis": "Something happened with science",
   "content": "Full article content here...",
-  "publishAt": "2025-05-10T10:00:00Z"
+  "publishAt": "2026-02-10T10:00:00Z",
+  "category": "SCIENCE"
 }
 
+###
+GET http://localhost:8080/daily-bugle/api/articles/category
+
+###
+POST http://localhost:8080/daily-bugle/api/ratings
+X-User-Id: 2
+Content-Type: application/json
+
+{
+  "articleId": 2,
+  "value": 4
+}
+
+###
+POST  http://localhost:8080/daily-bugle/api/articles
+Content-Type: application/json
+X-User-Id: 1
+
+{
+  "title": "Advanced Java",
+  "synopsis": "Streams and more",
+  "content": "Deep dive...",
+  "category": "TECHNOLOGY",
+  "publishAt": null,
+  "keywords": ["java"]
+}
+
+###
+GET http://localhost:8080/daily-bugle/api/articles/by-keyword/java
+
+###
+PUT  http://localhost:8080/daily-bugle/api/articles/1
+Content-Type: application/json
+X-User-Id: 1
+
+{
+  "title": "Spring Boot Guide UPDATED",
+  "synopsis": "Updated synopsis",
+  "content": "Updated content",
+  "category": "TECHNOLOGY",
+  "publishAt": null,
+  "keywords": ["docker", "kubernetes"]
+}
+
+###
+PUT http://localhost:8080/daily-bugle/api/admin/users/2/deactivate
+X-User-Id: 2
 

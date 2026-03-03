@@ -1,6 +1,7 @@
 package hu.progmasters.dailybugle.controller;
 
 
+import hu.progmasters.dailybugle.domain.Category;
 import hu.progmasters.dailybugle.dto.incoming.ArticleCommand;
 import hu.progmasters.dailybugle.dto.outgoing.ArticleDetail;
 import hu.progmasters.dailybugle.dto.outgoing.ArticlesListItem;
@@ -55,7 +56,6 @@ public class ArticleController {
     }
 
 
-
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteArticleById(@PathVariable Long id) {
         log.info("Delete article with id: {}", id);
@@ -67,6 +67,20 @@ public class ArticleController {
     public ResponseEntity<List<ArticlesListItem>> getArticlesByAuthor(@PathVariable Long authorId) {
         log.info("Get articles by author: {}", authorId);
         List<ArticlesListItem> result = articleService.getArticlesByAuthor(authorId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<ArticlesListItem>> getArticlesByCategory(@PathVariable Category category) {
+        log.info("Get articles by category: {}", category);
+        List<ArticlesListItem> result = articleService.getArticlesByCategory(category);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/by-keyword/{keyword}")
+    public ResponseEntity<List<ArticlesListItem>> getArticlesByKeyword(@PathVariable String keyword) {
+        log.info("Get articles by keyword: {}", keyword);
+        List<ArticlesListItem> result = articleService.getArticlesByKeyword(keyword);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

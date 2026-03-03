@@ -1,10 +1,12 @@
 package hu.progmasters.dailybugle.dto.outgoing;
 
+import hu.progmasters.dailybugle.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,5 +26,9 @@ public class ArticlesListItem {
     private BigDecimal averageRating;
 
     private long ratingCount;
+
+    private Category category;
+
+    List<String> keywords;
 
 }

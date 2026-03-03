@@ -45,32 +45,40 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(InvalidCredentialsException .class)
-    public ResponseEntity<ApiError> handleInvalidCredentialsException (InvalidCredentialsException  exception) {
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ApiError> handleInvalidCredentialsException(InvalidCredentialsException exception) {
         ApiError body = new ApiError("INVALID_EMAIL_OR_PASSWORD", "Invalid email or password", exception.getMessage());
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         return new ResponseEntity<>(body, status);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ApiError> handleAccessDeniedException (AccessDeniedException exception) {
+    public ResponseEntity<ApiError> handleAccessDeniedException(AccessDeniedException exception) {
         ApiError body = new ApiError("ACCESS_DENIED", "Access denied", exception.getMessage());
         HttpStatus status = HttpStatus.FORBIDDEN;
         return new ResponseEntity<>(body, status);
     }
 
     @ExceptionHandler(AlreadyRatedException.class)
-    public ResponseEntity<ApiError> handleAlreadyRatedException (AlreadyRatedException exception) {
+    public ResponseEntity<ApiError> handleAlreadyRatedException(AlreadyRatedException exception) {
         ApiError body = new ApiError("ALREADY_RATED", "User already rated this article", exception.getMessage());
         HttpStatus status = HttpStatus.CONFLICT;
         return new ResponseEntity<>(body, status);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiError> handleUserNotFoundException  (UserNotFoundException exception) {
+    public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException exception) {
         ApiError body = new ApiError("USER_NOT_FOUND", "User nor found", exception.getMessage());
         HttpStatus status = HttpStatus.CONFLICT;
         return new ResponseEntity<>(body, status);
     }
+
+    @ExceptionHandler(InvalidAdminOperationException.class)
+    public ResponseEntity<ApiError> handleInvalidAdminOperationException(InvalidAdminOperationException exception) {
+        ApiError body = new ApiError("INVALID_ADMIN_OPERATION", "Invalid admin operation", exception.getMessage());
+        HttpStatus status = HttpStatus.CONFLICT;
+        return new ResponseEntity<>(body, status);
+    }
+
 
 }
