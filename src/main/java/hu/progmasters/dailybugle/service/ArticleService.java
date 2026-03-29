@@ -3,9 +3,7 @@ package hu.progmasters.dailybugle.service;
 
 import hu.progmasters.dailybugle.domain.*;
 import hu.progmasters.dailybugle.dto.incoming.ArticleCommand;
-import hu.progmasters.dailybugle.dto.outgoing.ArticleDetail;
-import hu.progmasters.dailybugle.dto.outgoing.ArticlesListItem;
-import hu.progmasters.dailybugle.dto.outgoing.CommentDetail;
+import hu.progmasters.dailybugle.dto.outgoing.*;
 import hu.progmasters.dailybugle.exception.AccessDeniedException;
 import hu.progmasters.dailybugle.exception.ArticleNotFoundException;
 import hu.progmasters.dailybugle.repository.ArticleRepository;
@@ -157,7 +155,6 @@ public class ArticleService {
     }
 
 
-
     private ArticlesListItem mapToListItem(Article article) {
 
         ArticlesListItem result = modelMapper.map(article, ArticlesListItem.class);
@@ -294,5 +291,12 @@ public class ArticleService {
     }
 
 
-
+    public ArticleFormInitData getMovieFormInitData() {
+        List<CategoryDetails> categoryDetailsList = new ArrayList<>();
+        for (Category value : Category.values()) {
+            CategoryDetails categoryDetails = new CategoryDetails(value.name(), value.getDisplayName());
+            categoryDetailsList.add(categoryDetails);
+        }
+        return new ArticleFormInitData(categoryDetailsList);
+    }
 }

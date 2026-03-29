@@ -4,6 +4,7 @@ package hu.progmasters.dailybugle.controller;
 import hu.progmasters.dailybugle.domain.Category;
 import hu.progmasters.dailybugle.dto.incoming.ArticleCommand;
 import hu.progmasters.dailybugle.dto.outgoing.ArticleDetail;
+import hu.progmasters.dailybugle.dto.outgoing.ArticleFormInitData;
 import hu.progmasters.dailybugle.dto.outgoing.ArticlesListItem;
 import hu.progmasters.dailybugle.service.ArticleService;
 import jakarta.validation.Valid;
@@ -81,6 +82,13 @@ public class ArticleController {
     public ResponseEntity<List<ArticlesListItem>> getArticlesByKeyword(@PathVariable String keyword) {
         log.info("Get articles by keyword: {}", keyword);
         List<ArticlesListItem> result = articleService.getArticlesByKeyword(keyword);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/form-init-data")
+    public ResponseEntity<ArticleFormInitData>  getMovieFormInitData(){
+        log.info("Get movie form init data");
+        ArticleFormInitData result = articleService.getMovieFormInitData();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

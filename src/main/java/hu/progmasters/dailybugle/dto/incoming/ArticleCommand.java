@@ -15,7 +15,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleCommand {
+public class
+ArticleCommand {
 
 
     @NotBlank(message = "Title cannot be blank")

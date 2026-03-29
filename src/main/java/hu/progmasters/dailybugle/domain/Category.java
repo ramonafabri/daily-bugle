@@ -1,25 +1,36 @@
 package hu.progmasters.dailybugle.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum Category {
-    POLITICS,
-    SCIENCE,
-    TECHNOLOGY,
-    WORLD,
-    SPORTS,
-    CULTURE,
-    ENTERTAINMENT,
-    HEALTH,
-    MUSIC,
-    SPIDER_MAN,
-    CRIME,
-    BEAUTY,
-    FASHION,
-    FOOD,
-    TRAVEL,
-    BUSINESS,
-    EDUCATION,
-    ENVIRONMENT,
-    HORROR,
-    HOROSCOPE,
-    OTHER
+
+    POLITICS("politics"),
+    SCIENCE("science"),
+    TECHNOLOGY("technology"),
+    WORLD("world"),
+    SPORTS("sports"),
+    CULTURE("culture"),
+    ENTERTAINMENT("entertainment"),
+    HEALTH("health"),
+    MUSIC("music"),
+    SPIDER_MAN("spider-man"),
+    CRIME("crime"),
+    BEAUTY("beauty"),
+    FASHION("fashion"),
+    FOOD("food"),
+    TRAVEL("travel"),
+    BUSINESS("business"),
+    EDUCATION("education"),
+    ENVIRONMENT("environment"),
+    HORROR("horror"),
+    HOROSCOPE("horoscope"),
+    OTHER("other");
+
+    private final String displayName;
+
+    Category(String displayName) {
+        this.displayName = displayName;
+    }
+
 }
