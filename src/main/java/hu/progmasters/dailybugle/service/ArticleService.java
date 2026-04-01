@@ -8,6 +8,7 @@ import hu.progmasters.dailybugle.exception.AccessDeniedException;
 import hu.progmasters.dailybugle.exception.ArticleNotFoundException;
 import hu.progmasters.dailybugle.repository.ArticleRepository;
 import hu.progmasters.dailybugle.repository.KeywordRepository;
+import hu.progmasters.dailybugle.repository.RatingRepository;
 import hu.progmasters.dailybugle.security.CurrentUserProvider;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -36,12 +37,15 @@ public class ArticleService {
 
     private final KeywordRepository keywordRepository;
 
+    private final RatingRepository ratingRepository;
 
-    public ArticleService(ArticleRepository articleRepository, ModelMapper modelMapper, CurrentUserProvider currentUserProvider, KeywordRepository keywordRepository) {
+
+    public ArticleService(ArticleRepository articleRepository, ModelMapper modelMapper, CurrentUserProvider currentUserProvider, KeywordRepository keywordRepository, RatingRepository ratingRepository) {
         this.articleRepository = articleRepository;
         this.modelMapper = modelMapper;
         this.currentUserProvider = currentUserProvider;
         this.keywordRepository = keywordRepository;
+        this.ratingRepository = ratingRepository;
     }
 
     public void createArticle(ArticleCommand articleCommand) {
@@ -117,7 +121,7 @@ public class ArticleService {
         List<CommentDetail> comments = article.getComments().stream()
                 .map(comment -> {
                     CommentDetail cd = modelMapper.map(comment, CommentDetail.class);
-                    cd.setAuthor(comment.getUser().getDisplayName());
+                    cd.setAuthor(comment.getAuthor().getDisplayName());
                     return cd;
                 })
                 .toList();
@@ -133,6 +137,21 @@ public class ArticleService {
                         .map(Keyword::getName)
                         .toList()
         );
+
+        User currentUser = null;
+
+        try {
+            currentUser = currentUserProvider.getCurrentUser();
+        } catch (Exception e) {
+
+        }
+
+        if (currentUser != null) {
+            Optional<Rating> userRating = ratingRepository
+                    .findByArticle_IdAndUser_Id(article.getId(), currentUser.getId());
+
+            userRating.ifPresent(rating -> result.setUserRating(rating.getValue()));
+        }
 
         return result;
     }

@@ -33,14 +33,16 @@ public class UserService {
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
     private final CurrentUserProvider currentUserProvider;
+    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RatingRepository ratingRepository, CommentRepository commentRepository, ArticleRepository articleRepository, CurrentUserProvider currentUserProvider) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RatingRepository ratingRepository, CommentRepository commentRepository, ArticleRepository articleRepository, CurrentUserProvider currentUserProvider, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.ratingRepository = ratingRepository;
         this.commentRepository = commentRepository;
         this.articleRepository = articleRepository;
         this.currentUserProvider = currentUserProvider;
+        this.jwtService = jwtService;
     }
 
     public void register(RegisterCommand registerCommand) {
@@ -86,10 +88,14 @@ public class UserService {
             throw new InvalidCredentialsException("Invalid email or password");
         }
 
+        String token = jwtService.generateToken(user);
+
         return new LoginResponse(
                 user.getId(),
                 user.getDisplayName(),
-                user.getRole());
+                user.getRole(),
+                token);
+
     }
 
     public UserProfileResponse getUserProfile(Long id) {
@@ -116,7 +122,7 @@ public class UserService {
         response.setRatings(ratingInfos);
 
 
-        List<Comment> comments = commentRepository.findByUser_Id(user.getId());
+        List<Comment> comments = commentRepository.findByAuthor_Id(user.getId());
 
         Map<Article, Long> grouped = comments.stream()
                         .collect(Collectors.groupingBy(

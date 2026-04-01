@@ -14,9 +14,6 @@ import lombok.NoArgsConstructor;
 public class CommentCommand {
 
 
-    @NotNull(message = "Article id cannot be null")
-    private Long articleId;
-
     @NotBlank(message = "Content cannot be blank")
     private String content;
 

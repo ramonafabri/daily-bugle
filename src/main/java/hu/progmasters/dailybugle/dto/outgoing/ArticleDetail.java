@@ -40,4 +40,6 @@ public class ArticleDetail {
 
     List<String> keywords;
 
+    private Integer userRating;
+
 }

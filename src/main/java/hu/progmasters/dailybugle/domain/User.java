@@ -39,7 +39,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "author")
     private List<Article> articles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "author")
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

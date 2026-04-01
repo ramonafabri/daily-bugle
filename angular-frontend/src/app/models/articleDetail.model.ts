@@ -12,5 +12,5 @@ export interface ArticleDetailModel {
   category:string;
   publishAt:string;
   keywords:string[];
-
+  userRating?: number;
 }

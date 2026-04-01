@@ -8,13 +8,10 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/ratings")
+@RequestMapping("/api/articles/{articleId}/ratings")
 @Slf4j
 public class RatingController {
 
@@ -25,9 +22,9 @@ public class RatingController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createRating(@Valid @RequestBody RatingCommand ratingCommand) {
+    public ResponseEntity<Void> createRating(@PathVariable Long articleId, @Valid @RequestBody RatingCommand ratingCommand) {
         log.info("Create rating: {}", ratingCommand);
-        ratingService.createRating(ratingCommand);
+        ratingService.createRating(articleId,ratingCommand);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

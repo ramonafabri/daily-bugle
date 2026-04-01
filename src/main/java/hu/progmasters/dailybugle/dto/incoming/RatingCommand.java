@@ -18,8 +18,4 @@ public class RatingCommand {
     @Max(5)
     private Integer value;
 
-    @NotNull(message = "Article ID cannot be null")
-    private  Long articleId;
-
-
 }

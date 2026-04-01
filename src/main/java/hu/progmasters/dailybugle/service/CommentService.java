@@ -34,16 +34,16 @@ public class CommentService {
         this.modelMapper = modelMapper;
     }
 
-    public void createComment(CommentCommand commentCommand) {
+    public void createComment(Long articleId, CommentCommand commentCommand) {
 
         User currentUser = currentUserProvider.getCurrentUser();
 
-        Article article = articleService.findArticleById(commentCommand.getArticleId());
+        Article article = articleService.findArticleById(articleId);
 
         Comment comment = new Comment();
         comment.setContent(commentCommand.getContent());
         comment.setArticle(article);
-        comment.setUser(currentUser);
+        comment.setAuthor(currentUser);
 
         commentRepository.save(comment);
 

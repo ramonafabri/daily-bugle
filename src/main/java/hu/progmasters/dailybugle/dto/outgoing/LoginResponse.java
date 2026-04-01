@@ -13,6 +13,5 @@ public class LoginResponse {
     private Long id;
     private String displayName;
     private Role role;
-
-
+    private String token;
 }

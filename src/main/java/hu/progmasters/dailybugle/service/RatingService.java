@@ -31,9 +31,12 @@ public class RatingService {
     }
 
 
-    public void createRating(RatingCommand ratingCommand) {
+    public void createRating(Long articleId, RatingCommand ratingCommand) {
+
+        log.info("RATING VALUE: {}", ratingCommand.getValue());
+
         User currentUser = currentUserProvider.getCurrentUser();
-        Article article = articleService.findArticleById(ratingCommand.getArticleId());
+        Article article = articleService.findArticleById(articleId);
 
         boolean alreadyRated = ratingRepository.existsByArticle_IdAndUser_Id(
                         article.getId(),
